@@ -1,0 +1,20 @@
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  "[go]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "go.lintTool": "golangci-lint",
+  "go.lintOnSave": "file",
+  "go.formatTool": "gofmt",
+  "go.testOnSave": true,
+  "go.coverOnSave": true,
+  "go.coverageDecorator": {
+    "type": "gutter"
+  }
+}
