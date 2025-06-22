@@ -6,7 +6,7 @@ import (
 )
 
 func TestUpdateDocs(t *testing.T) {
-	historyFile = "test_history.txt"
+	historyFile := "gh_history.txt"
 	docsFile = "test_docs.md"
 	defer os.Remove(historyFile)
 	defer os.Remove(docsFile)

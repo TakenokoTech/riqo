@@ -3,8 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"sort"
-	"strings"
+	"riqo/internal/docs"
 
 	"github.com/spf13/cobra"
 )
@@ -31,7 +30,7 @@ func init() {
 }
 
 func updateDocs() error {
-	historyContent, err := os.ReadFile(historyFile)
+	historyContent, err := os.ReadFile("gh_history.txt")
 	if err != nil {
 		if os.IsNotExist(err) {
 			return fmt.Errorf("no history found to update documentation")
@@ -39,39 +38,6 @@ func updateDocs() error {
 		return err
 	}
 
-	historyLines := strings.Split(string(historyContent), "\n")
-	commandFrequency := make(map[string]int)
-
-	for _, line := range historyLines {
-		if line != "" {
-			commandFrequency[line]++
-		}
-	}
-
-	sortedCommands := sortCommandsByFrequency(commandFrequency)
-
-	docsContent := "# よく使われるコマンド\n\n"
-	for _, cmd := range sortedCommands {
-		docsContent += fmt.Sprintf("- %s （使用回数: %d 回）\n", cmd.Command, cmd.Frequency)
-	}
-
-	return os.WriteFile(docsFile, []byte(docsContent), 0644)
-}
-
-type commandUsage struct {
-	Command   string
-	Frequency int
-}
-
-func sortCommandsByFrequency(freqMap map[string]int) []commandUsage {
-	var commands []commandUsage
-	for cmd, freq := range freqMap {
-		commands = append(commands, commandUsage{Command: cmd, Frequency: freq})
-	}
-
-	sort.Slice(commands, func(i, j int) bool {
-		return commands[i].Frequency > commands[j].Frequency
-	})
-
-	return commands
+	updater := docs.DocsUpdater{DocsFile: docsFile}
+	return updater.UpdateDocs(string(historyContent))
 }

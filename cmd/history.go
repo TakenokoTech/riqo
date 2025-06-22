@@ -2,29 +2,42 @@ package cmd
 
 import (
 	"fmt"
-	"os"
+
+	"riqo/internal/history"
 
 	"github.com/spf13/cobra"
 )
 
 var historyFile = "gh_history.txt"
+var searchKeyword string
 
 // historyCmd represents the history command
 var historyCmd = &cobra.Command{
 	Use:   "history",
 	Short: "Manage command history",
-	Long:  `The history command allows you to view and manage the history of executed GitHub CLI commands.`,
+	Long:  `The history command allows you to view, clear, and search the history of executed GitHub CLI commands.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
-			fmt.Println("Please provide a subcommand (e.g., view, clear).")
+			fmt.Println("Please provide a subcommand (e.g., view, clear, search).")
 			return
 		}
 
+		manager := history.HistoryManager{HistoryFile: historyFile}
+
 		switch args[0] {
 		case "view":
-			viewHistory()
+			manager.ViewHistory()
 		case "clear":
-			clearHistory()
+			manager.ClearHistory()
+		case "search":
+			if searchKeyword == "" {
+				fmt.Println("Please provide a keyword to search using the --keyword flag.")
+				return
+			}
+			err := manager.SearchHistory(searchKeyword)
+			if err != nil {
+				fmt.Printf("Error searching history: %v\n", err)
+			}
 		default:
 			fmt.Printf("Unknown subcommand: %s\n", args[0])
 		}
@@ -32,42 +45,6 @@ var historyCmd = &cobra.Command{
 }
 
 func init() {
+	historyCmd.Flags().StringVarP(&searchKeyword, "keyword", "k", "", "Keyword to search in history")
 	rootCmd.AddCommand(historyCmd)
-}
-
-func viewHistory() {
-	content, err := os.ReadFile(historyFile)
-	if err != nil {
-		if os.IsNotExist(err) {
-			fmt.Println("No history found.")
-		} else {
-			fmt.Printf("Error reading history: %v\n", err)
-		}
-		return
-	}
-	fmt.Println("Command History:")
-	fmt.Println(string(content))
-}
-
-func clearHistory() {
-	err := os.Remove(historyFile)
-	if err != nil && !os.IsNotExist(err) {
-		fmt.Printf("Error clearing history: %v\n", err)
-		return
-	}
-	fmt.Println("History cleared.")
-}
-
-func appendToHistory(command string) {
-	file, err := os.OpenFile(historyFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		fmt.Printf("Error appending to history: %v\n", err)
-		return
-	}
-	defer file.Close()
-
-	_, err = file.WriteString(command + "\n")
-	if err != nil {
-		fmt.Printf("Error writing to history: %v\n", err)
-	}
 }
