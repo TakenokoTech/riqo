@@ -81,6 +81,23 @@ To measure test coverage and analyze the results, use the following commands:
 
    This will display a summary of the coverage for each function in the codebase.
 
+## Development Script
+To simplify the build and run process during development, use the provided script:
+
+1. **Run the script**:
+   ```bash
+   ./scripts/dev_run.sh <command> [args...]
+   ```
+
+   Example:
+   ```bash
+   ./scripts/dev_run.sh help
+   ```
+
+   This script will:
+   - Build the Riqo binary using `go build -o riqo`.
+   - Execute the specified Riqo command with any provided arguments.
+
 ## Notes
 - Ensure your Go version is up-to-date to avoid compatibility issues.
 - Add these commands to your workflow to maintain code quality.
