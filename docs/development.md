@@ -42,7 +42,7 @@ To build and run the CLI tool, follow these steps:
    Example output:
    ```
    Processing input: Show repository details
-   Suggested GitHub CLI command: gh repo view
+   Suggested CLI command: gh repo view
    ```
 
 3. **View Command History**:

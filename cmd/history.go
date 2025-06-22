@@ -15,7 +15,7 @@ var searchKeyword string
 var historyCmd = &cobra.Command{
 	Use:   "history",
 	Short: "Manage command history",
-	Long:  `The history command allows you to view, clear, and search the history of executed GitHub CLI commands.`,
+	Long:  `The history command allows you to view, clear, and search the history of executed CLI commands.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
 			fmt.Println("Please provide a subcommand (e.g., view, clear, search).")

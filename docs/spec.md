@@ -18,7 +18,7 @@ Riqoは、CLIコマンド全般を補助するためのツールです。
   **出力例**:
   ```
   Processing input: Show repository details
-  Suggested GitHub CLI command: gh repo view
+  Suggested CLI command: gh repo view
   ```
 
 ### 2. 履歴管理機能

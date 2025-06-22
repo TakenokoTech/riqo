@@ -28,7 +28,7 @@ func TestSuggestCommand(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	if output.String() != "Processing input: Show repository details\nSuggested GitHub CLI command: gh repo view\n" {
+	if output.String() != "Processing input: Show repository details\nSuggested CLI command: gh repo view\n" {
 		t.Errorf("Expected suggestion, got: %s", output.String())
 	}
 }

@@ -8,8 +8,8 @@ import (
 
 var rootCmd = &cobra.Command{
 	Use:   "riqo",
-	Short: "A CLI tool to assist with GitHub CLI commands",
-	Long: `Riqo is a CLI tool designed to help users generate and manage GitHub CLI commands efficiently.
+	Short: "A CLI tool to assist with CLI commands",
+	Long: `Riqo is a CLI tool designed to help users generate and manage CLI commands efficiently.
 			It leverages local LLMs to provide intelligent suggestions and improve user productivity.`,
 }
 
