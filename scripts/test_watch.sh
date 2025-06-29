@@ -8,4 +8,4 @@ then
 fi
 
 # Run reflex to watch for file changes and execute tests
-reflex -r '(\.go$|go\.mod)' -s -- sh -c 'go test ./cmd/...'
+reflex -r '(\.go$|go\.mod)' -s -- sh -c 'go test ./...'
