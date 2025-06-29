@@ -1,4 +1,5 @@
 coverage.out
 *.txt
+*.json
 riqo
 gh_docs.md

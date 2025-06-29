@@ -2,8 +2,10 @@ package history
 
 import (
 	"bytes"
+	"encoding/json"
 	"io"
 	"os"
+	"strings"
 	"testing"
 )
 
@@ -53,9 +55,8 @@ func TestAppendToHistory(t *testing.T) {
 		t.Fatalf("Failed to read history file: %v", err)
 	}
 
-	expected := "gh repo clone\n"
-	if string(content) != expected {
-		t.Errorf("Expected '%s', got '%s'", expected, string(content))
+	if !strings.HasPrefix(string(content), "gh repo clone|") {
+		t.Errorf("Expected prefix 'gh repo clone|', got '%s'", string(content))
 	}
 }
 
@@ -77,6 +78,40 @@ func TestSearchHistory(t *testing.T) {
 	expected := "Search results for keyword 'clone':\ngh repo clone\n"
 	if output != expected {
 		t.Errorf("Expected '%s', got '%s'", expected, output)
+	}
+}
+
+func TestExportHistory(t *testing.T) {
+	historyFile := "test_history.txt"
+	exportFile := "exported_history.txt"
+	defer os.Remove(historyFile)
+	defer os.Remove(exportFile)
+
+	content := "gh repo view\ngh repo clone\n"
+	err := os.WriteFile(historyFile, []byte(content), 0644)
+	if err != nil {
+		t.Fatalf("Failed to set up test history file: %v", err)
+	}
+
+	historyManager := HistoryManager{HistoryFile: historyFile}
+	err = historyManager.ExportHistory(exportFile)
+	if err != nil {
+		t.Fatalf("ExportHistory failed: %v", err)
+	}
+
+	exportedContent, err := os.ReadFile(exportFile)
+	if err != nil {
+		t.Fatalf("Failed to read exported file: %v", err)
+	}
+
+	var actualData []map[string]string
+	if err := json.Unmarshal(exportedContent, &actualData); err != nil {
+		t.Fatalf("Failed to unmarshal exported JSON: %v", err)
+	}
+	if len(actualData) != 2 ||
+		actualData[0]["command"] != "gh repo view" ||
+		actualData[1]["command"] != "gh repo clone" {
+		t.Errorf("Expected commands 'gh repo view' and 'gh repo clone', got %v", actualData)
 	}
 }
 

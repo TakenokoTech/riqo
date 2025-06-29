@@ -18,7 +18,7 @@ var historyCmd = &cobra.Command{
 	Long:  `The history command allows you to view, clear, and search the history of executed CLI commands.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
-			fmt.Println("Please provide a subcommand (e.g., view, clear, search).")
+			fmt.Println("Please provide a subcommand (e.g., view, clear, search, export).")
 			return
 		}
 
@@ -37,6 +37,11 @@ var historyCmd = &cobra.Command{
 			err := manager.SearchHistory(searchKeyword)
 			if err != nil {
 				fmt.Printf("Error searching history: %v\n", err)
+			}
+		case "export":
+			err := manager.ExportHistory("history_export.json")
+			if err != nil {
+fmt.Fprintf(cmd.ErrOrStderr(), "Error exporting history: %v\n", err)
 			}
 		default:
 			fmt.Printf("Unknown subcommand: %s\n", args[0])
