@@ -24,41 +24,41 @@ Riqo is a command-line interface (CLI) tool designed to enhance productivity by 
 
 2. Build the binary:
    ```bash
-   ./scripts/dev_run.sh build
+   go build -o riqo
    ```
 
 ## Usage
 
 Run the following command to see available options:
 ```bash
-./scripts/dev_run.sh help
+riqo help
 ```
 
 ### Example Commands
 
 - **Suggest a command**:
   ```bash
-  ./scripts/dev_run.sh suggest "create a repository"
+  riqo suggest "create a repository"
   ```
 
 - **View command history**:
   ```bash
-  ./scripts/dev_run.sh history view
+  riqo history view
   ```
 
 - **Clear command history**:
   ```bash
-  ./scripts/dev_run.sh history clear
+  riqo history clear
   ```
 
 - **Update documentation**:
   ```bash
-  ./scripts/dev_run.sh docs
+  riqo docs
   ```
 
 - **Real-time suggestions**:
   ```bash
-  ./scripts/dev_run.sh realtime
+  riqo realtime
   ```
 
 ## License
