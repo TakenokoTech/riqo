@@ -41,7 +41,7 @@ var historyCmd = &cobra.Command{
 		case "export":
 			err := manager.ExportHistory("history_export.json")
 			if err != nil {
-				fmt.Printf("Error exporting history: %v\n", err)
+fmt.Fprintf(cmd.ErrOrStderr(), "Error exporting history: %v\n", err)
 			}
 		default:
 			fmt.Printf("Unknown subcommand: %s\n", args[0])
