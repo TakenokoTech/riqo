@@ -1,6 +1,7 @@
 package history
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"strings"
@@ -69,5 +70,42 @@ func (h *HistoryManager) SearchHistory(keyword string) error {
 	if !found {
 		fmt.Println("No matching commands found.")
 	}
+	return nil
+}
+
+func (h *HistoryManager) ExportHistory(filename string) error {
+	content, err := os.ReadFile(h.HistoryFile)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return fmt.Errorf("no history found")
+		}
+		return err
+	}
+
+	lines := strings.Split(string(content), "\n")
+	historyData := make([]map[string]string, 0)
+
+	for _, line := range lines {
+		if line == "" {
+			continue
+		}
+		historyData = append(historyData, map[string]string{
+			"command": line,
+		})
+	}
+
+	file, err := os.Create(filename)
+	if err != nil {
+		return fmt.Errorf("error creating export file: %v", err)
+	}
+	defer file.Close()
+
+	encoder := json.NewEncoder(file)
+	encoder.SetIndent("", "  ")
+	if err := encoder.Encode(historyData); err != nil {
+		return fmt.Errorf("error writing JSON to export file: %v", err)
+	}
+
+	fmt.Printf("History exported to %s\n", filename)
 	return nil
 }
