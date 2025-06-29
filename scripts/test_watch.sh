@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -euo pipefail
 # Ensure reflex is installed
 if ! command -v reflex &> /dev/null
 then
