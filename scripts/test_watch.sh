@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Ensure reflex is installed
 if ! command -v reflex &> /dev/null
